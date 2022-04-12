@@ -4,7 +4,6 @@ const API_URL = 'https://opentdb.com/api.php?amount=10&type=multiple';
     constructor(quizData) {
       this._quizzes = quizData.results;
       this._correctAnswersNum = 0;
-      console.log(quizData.results);
     }
 
 
@@ -60,11 +59,14 @@ const API_URL = 'https://opentdb.com/api.php?amount=10&type=multiple';
     titleElement.textContent = '取得中';
     questionElement.textContent = '少々お待ち下さい';
 
-    const response = await fetch(API_URL);
-    const quizData = await response.json();
-    const quizInstance = new Quiz(quizData);
-
-    setNextQuiz(quizInstance, index);
+    try {
+      const respnse = await fetch(API_URL);
+      quizData = await respnse.json();
+      const quizInstance = new Quiz(quizData);
+      setNextQuiz(quizInstance, index);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const setNextQuiz = (quizInstance, index) => {
